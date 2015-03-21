@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ng-cordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -19,7 +19,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       StatusBar.styleDefault();
     }
   });
-})
+}).
+factory('QRScanService', [function () {
+
+    return {
+        scan: function(success, fail) {
+            if(window.cordova && window.cordova.plugins.barcodeScanner){
+                window.cordova.plugins.barcodeScanner.scan(
+                    function (result) { success(result); },
+                    function (error) { fail(error); }
+                );
+            }else{
+                fail({
+                    'error':'Cordova not initialized'
+                });
+            }
+
+        }
+    };
+
+}])
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -51,7 +70,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
           'tab-dash': {
               templateUrl: 'templates/retalLab-scan.html',
-              controller: 'DashCtrl'
+              controller: 'RetalLabScanerCtrl'
           }
       }
   })
