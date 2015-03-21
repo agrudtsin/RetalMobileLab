@@ -42,6 +42,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
           'tab-dash': {
               templateUrl: 'templates/retalLab-home.html',
+              controller: 'RetalLabHomeCtrl'
+          }
+      }
+  })
+  .state('tab.scan', {
+      url: '/scan',
+      views: {
+          'tab-dash': {
+              templateUrl: 'templates/retalLab-scan.html',
               controller: 'DashCtrl'
           }
       }
