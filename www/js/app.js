@@ -55,6 +55,33 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           }
       }
   })
+  .state('tab.numbers', {
+      url: '/numbers',
+      views: {
+          'tab-dash': {
+              templateUrl: 'templates/retalLab-numbers.html',
+              controller: 'DashCtrl'
+          }
+      }
+  })
+  .state('tab.comment', {
+      url: '/comment',
+      views: {
+          'tab-dash': {
+              templateUrl: 'templates/retalLab-comment.html',
+              controller: 'DashCtrl'
+          }
+      }
+  })
+  .state('tab.defect', {
+      url: '/defect',
+      views: {
+          'tab-dash': {
+              templateUrl: 'templates/retalLab-defect.html',
+              controller: 'DashCtrl'
+          }
+      }
+  })
 
   .state('tab.dash', {
     url: '/dash',
