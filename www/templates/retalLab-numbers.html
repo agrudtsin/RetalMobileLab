@@ -1,37 +1,18 @@
-<ion-view view-title="ADD NUMBERS">
-    <ion-content class="padding">
+<ion-view view-title="SELECT NUMBERS">
 
-        <div class="button-bar">
-            <a class="button">1</a>
-            <a class="button">2</a>
-            <a class="button">3</a>
-            <a class="button">4</a>
-            <a class="button">5</a>
-            <a class="button">6</a>
-            <a class="button">7</a>
-            <a class="button">8</a>
-            <a class="button">9</a>
-            <a class="button">0</a>
-        </div>
-        <br>
-        <div class="button-bar">
-            <a class="button">1</a>
-            <a class="button">2</a>
-            <a class="button">3</a>
-            <a class="button">4</a>
-            <a class="button">5</a>
-            <a class="button">6</a>
-            <a class="button">7</a>
-            <a class="button">8</a>
-            <a class="button">9</a>
-            <a class="button">0</a>
-        </div>
-        <button class="button button-light">
-            Add
-        </button>
-        <h3>23,24,2,26,27,28,29,30</h3>
-        <a class="button button-balanced button-large button-block" href="#/tab/comment">
+
+    <ion-content class="padding">
+        <button class="button button-balanced button-large button-block" ng-click="onClickNext()">
             Next
-        </a>
+        </button>
+        <h4>Selected numbers: {{getSelectedNumbers(numbersList)}}</h4>
+        <div class="list list-inset">
+
+            <ion-checkbox class="item" ng-repeat="item in numbersList"
+                          ng-model="item.checked"
+                          ng-checked="item.checked">
+                {{ item.text }}
+            </ion-checkbox>
+         </div>
     </ion-content>
 </ion-view>

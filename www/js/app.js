@@ -20,6 +20,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   });
 }).
+service('CurentData',[function(){
+    return {
+        'controlType':'',
+        'workCenter':'',
+        'mold':'',
+        'user':'',
+        'dateTime':'',
+        'comment':'',
+        'numbers':''
+
+
+    };
+}]).
 factory('QRScanService', [function () {
 
     return {
@@ -30,9 +43,7 @@ factory('QRScanService', [function () {
                     function (error) { fail(error); }
                 );
             }else{
-                fail({
-                    'error':'Cordova not initialized'
-                });
+                fail("Camera isn't initialized. Enter data manualy");
             }
 
         }
@@ -49,7 +60,7 @@ factory('QRScanService', [function () {
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+.state('tab', {
     url: "/tab",
     abstract: true,
     templateUrl: "templates/tabs.html"
@@ -79,7 +90,7 @@ factory('QRScanService', [function () {
       views: {
           'tab-dash': {
               templateUrl: 'templates/retalLab-numbers.html',
-              controller: 'DashCtrl'
+              controller: 'RetalLabNumbersCtrl'
           }
       }
   })
