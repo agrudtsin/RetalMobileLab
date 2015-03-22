@@ -20,6 +20,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   });
 }).
+factory('$localstorage', ['$window', function($window) {
+    return {
+        set: function(key, value) {
+            $window.localStorage[key] = value;
+        },
+        get: function(key, defaultValue) {
+            return $window.localStorage[key] || defaultValue;
+        },
+        setObject: function(key, value) {
+            $window.localStorage[key] = JSON.stringify(value);
+        },
+        getObject: function(key) {
+            return JSON.parse($window.localStorage[key] || '{}');
+        }
+    }
+}]).
 service('CurrentData',['DataSet',function(DataSet){
     var obj = {
         'data':{},
@@ -46,21 +62,33 @@ service('CurrentData',['DataSet',function(DataSet){
             'factory': 'Retal Dnepr',
             'user': 'Operator 1'
         }
-    };
+    }
 }]).
 
-service('DataSet',[function(){
-        return {
+service('DataSet',['$localstorage',function($localstorage){
+        var obj =  {
+            'unSyncData':[],
             'storeData':storeData
         };
+        obj.unSyncData = $localstorage.getObject('RetalMobileLab.unSyncData');
+        if(! angular.isArray(obj.unSyncData)){
+            obj.unSyncData = [];
+        }
+        return obj;
+
         function storeData(dataObj){
-            console.log('Data stored', dataObj);
-        };
+            this.unSyncData.push(dataObj);
+            if(!!window.localStorage){
+                $localstorage.setObject('RetalMobileLab.unSyncData', this.unSyncData);
+                console.log('Data stored', dataObj);
+            }
+        }
 }]).
 factory('QRScanService', [function () {
 
     return {
         scan: function(success, fail) {
+            /** @namespace window.cordova.plugins.barcodeScanner */
             if(window.cordova && window.cordova.plugins.barcodeScanner){
                 window.cordova.plugins.barcodeScanner.scan(
                     function (result) { success(result); },
@@ -104,7 +132,12 @@ factory('QRScanService', [function () {
       url: '/defect',
       templateUrl: 'templates/retalLab-defect.html',
       controller: 'RetalLabDefectCtrl'
-  });
+  })
+    .state('sync', {
+        url: '/sync',
+        templateUrl: 'templates/retalLab-sync.html',
+        controller: 'RetalLabSyncCtrl'
+    });
     // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/home');
 
