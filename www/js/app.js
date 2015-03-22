@@ -20,18 +20,40 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   });
 }).
-service('CurentData',[function(){
-    return {
-        'controlType':'',
-        'workCenter':'',
-        'mold':'',
-        'user':'',
-        'dateTime':'',
-        'comment':'',
-        'numbers':''
-
-
+service('CurentData',['DataSet',function(DataSet){
+    var obj = {
+        'data':{},
+        'storeData':storeData
     };
+    obj.data = getClearDataObj();
+    return obj;
+
+    function storeData(){
+        DataSet.storeData(this.data);
+        this.data.date = new Date();
+        this.data = getClearDataObj();
+    }
+
+    function getClearDataObj(){
+        return {
+            'controlType': '',
+            'workCenter': '',
+            'mold': '',
+            'user': '',
+            'date': '',
+            'comment': '',
+            'numbers': ''
+        }
+    };
+}]).
+
+service('DataSet',[function(){
+        return {
+            'storeData':storeData
+        };
+        function storeData(dataObj){
+            console.log('Data stored', dataObj);
+        };
 }]).
 factory('QRScanService', [function () {
 
@@ -51,22 +73,11 @@ factory('QRScanService', [function () {
 
 }])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  //Disable controllers cashing because storing data in services
+  $ionicConfigProvider.views.maxCache(0);
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
   $stateProvider
-
-  // setup an abstract state for the tabs directive
-//.state('tab', {
-//    url: "/tab",
-//    abstract: true,
-//    templateUrl: "templates/tabs.html"
-//  })
-//
-  // Each tab has its own nav history stack:
   .state('home', {
       url: '/home',
       templateUrl: 'templates/retalLab-home.html',
@@ -85,13 +96,13 @@ factory('QRScanService', [function () {
   .state('comment', {
       url: '/comment',
       templateUrl: 'templates/retalLab-comment.html',
-      controller: 'DashCtrl'
+      controller: 'RetalLabCommentCtrl'
   })
   .state('defect', {
       url: '/defect',
       templateUrl: 'templates/retalLab-defect.html',
-      controller: 'DashCtrl'
-  })
+      controller: 'RetalLabDefectCtrl'
+  });
     // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/home');
 

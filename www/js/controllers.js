@@ -1,26 +1,14 @@
 angular.module('starter.controllers', [])
-
-.controller('DashCtrl', function($scope) {})
-
-.controller('ChatsCtrl', function($scope, Chats) {
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  }
+.controller('RetalLabHomeCtrl', function($scope, $ionicHistory) {
+        $ionicHistory.clearHistory();
 })
+.controller('RetalLabDefectCtrl', function($scope) {
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
 })
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-})
-
-.controller('RetalLabHomeCtrl', function($scope) {
-
+.controller('RetalLabCommentCtrl', function($scope,$state) {
+    $scope.onClickNext = function(){
+        $state.go('home')
+    };
 })
 .controller('RetalLabNumbersCtrl', function($scope, $state) {
         var MAX_COUNT_PREFORMS_ON_MOLD = 96;
@@ -46,16 +34,22 @@ angular.module('starter.controllers', [])
         }
 
 })
+
 .controller('RetalLabScanerCtrl',
 ['QRScanService', '$ionicPopup', '$ionicModal','$scope','CurentData', '$state',
     function (QRScanService, $ionicPopup, $ionicModal, $scope, CurentData, $state) {
 
-       $scope.curentData = CurentData;
+       console.log('RetalLabScanerCtrl', "New ctrl init");
+
+       $scope.curentData = CurentData.data;
+       $scope.curentData.mold = "";
+       $scope.curentData.workCenter = "";
        $scope.isDebugMode = ! window.cordova;
        scanIt();
 
         $scope.onClickSuccess = function(){
-            $state.go('home')
+            $state.go('home');
+            CurentData.storeData();
         };
 
         $scope.onClickDefect = function(){

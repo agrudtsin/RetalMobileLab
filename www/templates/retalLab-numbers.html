@@ -1,11 +1,13 @@
 <ion-view view-title="SELECT NUMBERS">
 
-
-    <ion-content class="padding">
+    <div class="footer-90">
+        <h4>Selected numbers: {{getSelectedNumbers(numbersList)}}</h4>
         <button class="button button-balanced button-large button-block" ng-click="onClickNext()">
             Next
         </button>
-        <h4>Selected numbers: {{getSelectedNumbers(numbersList)}}</h4>
+    </div>
+    <ion-content class="padding has-footer-90 has-header">
+
         <div class="list list-inset">
 
             <ion-checkbox class="item" ng-repeat="item in numbersList"

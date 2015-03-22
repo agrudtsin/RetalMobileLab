@@ -1,34 +1,47 @@
 <ion-view view-title="BARCODE SCAN">
-    <ion-content class="padding">
-        <h3>{{scannerError}}</h3>
 
-        <div class="bar bar-header item-input-inset" ng-show="isDebugMode">
-            <label class="item-input-wrapper">
-                <input type="text" placeholder="Raw data from QR Code" ng-model="QRCodeResult">
-            </label>
-            <button class="button button-clear" ng-click="decodeRawQRText(QRCodeResult)">
-                Decode
-            </button>
-        </div>
-
-        <label class="item item-input item-stacked-label">
-            <span class="input-label">Work center</span>
-            <input type="text" ng-model="curentData.workCenter">
-        </label>
-        <label class="item item-input item-stacked-label">
-            <span class="input-label">Mold</span>
-            <input type="text" ng-model="curentData.mold">
-        </label>
+    <div class="footer-70">
         <div class="button-bar">
-            <button class="button button-balanced button-large button-block" ng-click="onClickSuccess()">
+            <div class="button button-calm button-large button-block" ng-show="!curentData.workCenter || !curentData.mold ">
+                You must fill Working center and mold
+            </div>
+
+            <button class="button button-balanced button-large button-block" ng-click="onClickSuccess()"
+                    ng-hide="!curentData.workCenter || !curentData.mold">
                 Success
             </button>
-            <button class="button button-assertive button-large button-block" ng-click="onClickDefect()">
+            <button class="button button-assertive button-large button-block" ng-click="onClickDefect()"
+                    ng-hide="!curentData.workCenter || !curentData.mold" >
                 Defect
             </button>
         </div>
+    </div>
 
+    <ion-content class="padding has-footer-70">
+
+            <h3>{{scannerError}}</h3>
+
+            <div class="bar bar-header item-input-inset" ng-show="isDebugMode">
+                <label class="item-input-wrapper">
+                    <input type="text" placeholder="Raw data from QR Code" ng-model="QRCodeResult">
+                </label>
+                <button class="button button-clear" ng-click="decodeRawQRText(QRCodeResult)">
+                    Decode
+                </button>
+            </div>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Work center</span>
+                <input type="text" ng-model="curentData.workCenter">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Mold</span>
+                <input type="text" ng-model="curentData.mold">
+            </label>
 
 
     </ion-content>
+
+
+
 </ion-view>
