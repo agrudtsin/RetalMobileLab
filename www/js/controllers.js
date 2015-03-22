@@ -30,7 +30,7 @@ angular.module('starter.controllers', [])
         }
 
         $scope.onClickNext = function(){
-            $state.go('tab.comment')
+            $state.go('comment')
         };
 
         $scope.getSelectedNumbers = function(numbersList){
@@ -55,11 +55,11 @@ angular.module('starter.controllers', [])
        scanIt();
 
         $scope.onClickSuccess = function(){
-            $state.go('tab.home')
+            $state.go('home')
         };
 
         $scope.onClickDefect = function(){
-            $state.go('tab.defect')
+            $state.go('defect')
         };
 
         $scope.decodeRawQRText = function decodeRawQRText(QRCodeResult) {

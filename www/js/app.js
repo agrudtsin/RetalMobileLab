@@ -60,100 +60,39 @@ factory('QRScanService', [function () {
   $stateProvider
 
   // setup an abstract state for the tabs directive
-.state('tab', {
-    url: "/tab",
-    abstract: true,
-    templateUrl: "templates/tabs.html"
-  })
-
+//.state('tab', {
+//    url: "/tab",
+//    abstract: true,
+//    templateUrl: "templates/tabs.html"
+//  })
+//
   // Each tab has its own nav history stack:
-  .state('tab.home', {
+  .state('home', {
       url: '/home',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-home.html',
-              controller: 'RetalLabHomeCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-home.html',
+      controller: 'RetalLabHomeCtrl'
   })
-  .state('tab.scan', {
+  .state('scan', {
       url: '/scan',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-scan.html',
-              controller: 'RetalLabScanerCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-scan.html',
+      controller: 'RetalLabScanerCtrl'
   })
-  .state('tab.numbers', {
+  .state('numbers', {
       url: '/numbers',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-numbers.html',
-              controller: 'RetalLabNumbersCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-numbers.html',
+      controller: 'RetalLabNumbersCtrl'
   })
-  .state('tab.comment', {
+  .state('comment', {
       url: '/comment',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-comment.html',
-              controller: 'DashCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-comment.html',
+      controller: 'DashCtrl'
   })
-  .state('tab.defect', {
+  .state('defect', {
       url: '/defect',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-defect.html',
-              controller: 'DashCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-defect.html',
+      controller: 'DashCtrl'
   })
-
-  .state('tab.dash', {
-    url: '/dash',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-
-      .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  });
-
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/home');
+    // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/home');
 
 });
