@@ -27,6 +27,7 @@ angular.module('starter.controllers', [])
         $state.go('home');
     };
     $scope.onClickSync = function(){
+        DataSet.sync();
         $state.go('home');
     };
 

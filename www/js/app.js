@@ -68,13 +68,19 @@ service('CurrentData',['DataSet',function(DataSet){
 service('DataSet',['$localstorage',function($localstorage){
         var obj =  {
             'unSyncData':[],
-            'storeData':storeData
+            'storeData':storeData,
+            'sync':syncDemo
         };
         obj.unSyncData = $localstorage.getObject('RetalMobileLab.unSyncData');
         if(! angular.isArray(obj.unSyncData)){
             obj.unSyncData = [];
         }
         return obj;
+
+        function syncDemo(){
+            this.unSyncData = [];
+            $localstorage.setObject('RetalMobileLab.unSyncData', this.unSyncData);
+        }
 
         function storeData(dataObj){
             this.unSyncData.push(dataObj);
