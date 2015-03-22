@@ -35,8 +35,30 @@ factory('$localstorage', ['$window', function($window) {
             return JSON.parse($window.localStorage[key] || '{}');
         }
     }
-}]).
-service('CurrentData',['DataSet',function(DataSet){
+}])
+.service('Dafaults',['$localstorage',function($localstorage){
+        var obj = {
+            'data':{
+                'user':'',
+                'factory':''
+            },
+            'save':save,
+            'load':load
+        };
+        obj.load();
+        return obj;
+
+        function save(){
+            $localstorage.setObject('RetalMobileLab.defaults', this.data);
+        }
+        function load(){
+            var storedDefaults = $localstorage.getObject('RetalMobileLab.defaults');
+            if(!!storedDefaults && !!storedDefaults.user && !!storedDefaults.factory){
+                this.data = storedDefaults;
+            }
+        }
+    }])
+.service('CurrentData',['DataSet','Dafaults',function(DataSet, Dafaults){
     var obj = {
         'data':{},
         'storeData':storeData
@@ -59,8 +81,8 @@ service('CurrentData',['DataSet',function(DataSet){
             'comment': '',
             'numbers': '',
             'defect': '',
-            'factory': 'Retal Dnepr',
-            'user': 'Operator 1'
+            'factory': Dafaults.data.factory,
+            'user': Dafaults.data.user
         }
     }
 }]).
@@ -143,7 +165,12 @@ factory('QRScanService', [function () {
         url: '/sync',
         templateUrl: 'templates/retalLab-sync.html',
         controller: 'RetalLabSyncCtrl'
-    });
+    })
+  .state('login', {
+      url: '/login',
+      templateUrl: 'templates/retalLab-login.html',
+      controller: 'RetalLabLoginCtrl'
+  });
     // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/home');
 

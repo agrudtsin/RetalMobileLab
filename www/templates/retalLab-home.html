@@ -1,14 +1,23 @@
-<ion-view view-title="MOBLIE LAB">
+<ion-view view-title="RETAL MOBLIE LAB">
     <ion-content class="padding has-footer-70">
-        <h3>User: {{currentData.user}}</h3>
-        <h3>Factory: {{currentData.factory}}</h3>
+        <div name="Profile" ng-show="!!currentData.user && !!currentData.factory">
+            <h3>User: {{currentData.user}}</h3>
+            <h3>Factory: {{currentData.factory}}</h3>
+        </div>
+
+        <div class="bar bar-header bar-assertive" ng-hide="!!currentData.user && !!currentData.factory">
+            <h1 class="title">You must login before start</h1>
+        </div>
 
         <br><br><br>
+
+
         <button class="button button-stable button-block" ng-click="onClickSync()">
-            Sync
+            {{getSyncMessage()}}
         </button>
 
-        <button class="button button-stable button-block">
+
+        <button class="button button-stable button-block" ng-click="onClickLogin()">
             Login / Logout
         </button>
 

@@ -17,3 +17,8 @@
 .has-footer-70 {
     bottom:70px
 }
+pre {
+    font-family: "PT Mono", monospace;
+    font-size: smaller;
+    line-height: 100%;
+}

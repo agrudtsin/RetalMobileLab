@@ -1,10 +1,20 @@
 angular.module('starter.controllers', [])
-.controller('RetalLabHomeCtrl', function($scope, $ionicHistory, $state, CurrentData) {
+.controller('RetalLabHomeCtrl', function($scope, $ionicHistory, $state, CurrentData, DataSet) {
         $ionicHistory.clearHistory();
         $scope.currentData = CurrentData.data;
         $scope.onClickSync = function(){
             $state.go('sync')
         };
+        $scope.onClickLogin = function(){
+            $state.go('login')
+        };
+        $scope.getSyncMessage = function(){
+            if(!!DataSet.unSyncData && DataSet.unSyncData.length > 0){
+                return "Synchronize your data";
+            } else {
+                return "All data is synchronized";
+            }
+        }
 })
 .controller('RetalLabDefectCtrl', function($scope, CurrentData, $state) {
         $scope.currentData = CurrentData.data;
@@ -28,6 +38,19 @@ angular.module('starter.controllers', [])
     };
     $scope.onClickSync = function(){
         DataSet.sync();
+        $state.go('home');
+    };
+
+})
+.controller('RetalLabLoginCtrl', function($scope, CurrentData, Dafaults, $state) {
+    $scope.currentData = CurrentData.data;
+    $scope.onClickBack = function(){
+        $state.go('home');
+    };
+    $scope.onClickLogin = function(){
+        Dafaults.data.user = $scope.currentData.user;
+        Dafaults.data.factory = $scope.currentData.factory;
+        Dafaults.save();
         $state.go('home');
     };
 
