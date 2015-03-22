@@ -1,23 +1,36 @@
-<ion-view view-title="MOBLIE LAB">
-    <ion-content class="padding">
-        <h3>Andrey Grudtsin</h3>
-        <h3>Retal Dnepr</h3>
+<ion-view view-title="RETAL MOBLIE LAB">
+    <ion-content class="padding has-footer-70">
+        <div name="Profile" ng-show="!!currentData.user && !!currentData.factory">
+            <h3>User: {{currentData.user}}</h3>
+            <h3>Factory: {{currentData.factory}}</h3>
+        </div>
 
-
-        <a class="button button-balanced button-large button-block" href="#/tab/scan">
-            Scan barcode
-        </a>
+        <div class="bar bar-header bar-assertive" ng-hide="!!currentData.user && !!currentData.factory">
+            <h1 class="title">You must login before start</h1>
+        </div>
 
         <br><br><br>
-        <button class="button button-positive button-block">
-            Sync
+
+
+        <button class="button button-stable button-block" ng-click="onClickSync()">
+            {{getSyncMessage()}}
         </button>
 
-        <button class="button button-energized button-block">
+
+        <button class="button button-stable button-block" ng-click="onClickLogin()">
             Login / Logout
+        </button>
+
+        <button class="button button-stable button-block">
+            Settings
         </button>
 
 
 
     </ion-content>
+    <div class="footer-70">
+        <a class="button button-balanced button-large button-block" href="#/scan">
+            Scan barcode
+        </a>
+    </div>
 </ion-view>

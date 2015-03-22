@@ -1,18 +1,23 @@
 <ion-view view-title="SELECT NUMBERS">
 
 
-    <ion-content class="padding">
-        <button class="button button-balanced button-large button-block" ng-click="onClickNext()">
-            Next
-        </button>
-        <h4>Selected numbers: {{getSelectedNumbers(numbersList)}}</h4>
-        <div class="list list-inset">
+    <ion-content class="padding has-footer-90">
 
-            <ion-checkbox class="item" ng-repeat="item in numbersList"
+            <ion-checkbox class="item" collection-repeat="item in numbersList"
                           ng-model="item.checked"
                           ng-checked="item.checked">
                 {{ item.text }}
             </ion-checkbox>
-         </div>
+
     </ion-content>
+    <div class="footer-90">
+        <h6>Selected numbers: {{getSelectedNumbers(numbersList)}}</h6>
+
+        <div class="button button-calm button-large button-block" ng-show="!getSelectedNumbers(numbersList)">
+            You must select numbers
+        </div>
+        <button class="button button-balanced button-large button-block" ng-click="onClickNext()" ng-hide="!getSelectedNumbers(numbersList)">
+            Next
+        </button>
+    </div>
 </ion-view>

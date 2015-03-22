@@ -1,28 +1,69 @@
 angular.module('starter.controllers', [])
-
-.controller('DashCtrl', function($scope) {})
-
-.controller('ChatsCtrl', function($scope, Chats) {
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  }
+.controller('RetalLabHomeCtrl', function($scope, $ionicHistory, $state, CurrentData, DataSet) {
+        $ionicHistory.clearHistory();
+        $scope.currentData = CurrentData.data;
+        $scope.onClickSync = function(){
+            $state.go('sync')
+        };
+        $scope.onClickLogin = function(){
+            $state.go('login')
+        };
+        $scope.getSyncMessage = function(){
+            if(!!DataSet.unSyncData && DataSet.unSyncData.length > 0){
+                return "Synchronize your data";
+            } else {
+                return "All data is synchronized";
+            }
+        }
 })
+.controller('RetalLabDefectCtrl', function($scope, CurrentData, $state) {
+        $scope.currentData = CurrentData.data;
+        $scope.currentData.defect = "";
+        $scope.defects = [];
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+        for(var i=1; i<=150; i+=1){
+            $scope.defects.push(
+                {'text':'Defect '+ i.toString()}
+            )
+        }
+        $scope.onClickNext = function(){
+            $state.go('numbers')
+        };
+
 })
+.controller('RetalLabSyncCtrl', function($scope, DataSet, $state) {
+    $scope.currentData = DataSet.unSyncData;
+    $scope.onClickBack = function(){
+        $state.go('home');
+    };
+    $scope.onClickSync = function(){
+        DataSet.sync();
+        $state.go('home');
+    };
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
 })
-
-.controller('RetalLabHomeCtrl', function($scope) {
+.controller('RetalLabLoginCtrl', function($scope, CurrentData, Dafaults, $state) {
+    $scope.currentData = CurrentData.data;
+    $scope.onClickBack = function(){
+        $state.go('home');
+    };
+    $scope.onClickLogin = function(){
+        Dafaults.data.user = $scope.currentData.user;
+        Dafaults.data.factory = $scope.currentData.factory;
+        Dafaults.save();
+        $state.go('home');
+    };
 
 })
-.controller('RetalLabNumbersCtrl', function($scope, $state) {
+.controller('RetalLabCommentCtrl', function($scope,$state, CurrentData) {
+    $scope.currentData = CurrentData.data;
+    $scope.currentData.comment = "";
+    $scope.onClickNext = function(){
+        $state.go('home');
+        CurrentData.storeData();
+    };
+})
+.controller('RetalLabNumbersCtrl', function($scope, $state, CurrentData) {
         var MAX_COUNT_PREFORMS_ON_MOLD = 96;
         $scope.numbersList = [];
         for(var i = 1; i <= MAX_COUNT_PREFORMS_ON_MOLD; i++){
@@ -30,52 +71,59 @@ angular.module('starter.controllers', [])
         }
 
         $scope.onClickNext = function(){
-            $state.go('tab.comment')
+            $state.go('comment')
         };
 
         $scope.getSelectedNumbers = function(numbersList){
 
-            return numbersList
-                .filter(function(element, index, array){
+            CurrentData.data.numbers =
+                numbersList.filter(function(element){
                     return element.checked;
                 })
-                .reduce(function(previousValue, currentValue, index, array){
+                .reduce(function(previousValue, currentValue){
                     return previousValue + currentValue.text + ';';
                 }, "");
+            return CurrentData.data.numbers;
 
         }
 
 })
-.controller('RetalLabScanerCtrl',
-['QRScanService', '$ionicPopup', '$ionicModal','$scope','CurentData', '$state',
-    function (QRScanService, $ionicPopup, $ionicModal, $scope, CurentData, $state) {
 
-       $scope.curentData = CurentData;
+.controller('RetalLabScanerCtrl',
+['QRScanService', '$ionicPopup', '$ionicModal','$scope','CurrentData', '$state',
+    function (QRScanService, $ionicPopup, $ionicModal, $scope, CurrentData, $state) {
+
+       console.log('RetalLabScanerCtrl', "New ctrl init");
+
+       $scope.currentData = CurrentData.data;
+       $scope.currentData.mold = "";
+       $scope.currentData.workCenter = "";
        $scope.isDebugMode = ! window.cordova;
        scanIt();
 
         $scope.onClickSuccess = function(){
-            $state.go('tab.home')
+            $state.go('home');
+            CurrentData.storeData();
         };
 
         $scope.onClickDefect = function(){
-            $state.go('tab.defect')
+            $state.go('defect')
         };
 
         $scope.decodeRawQRText = function decodeRawQRText(QRCodeResult) {
             var qrObj = {};
-            $scope.curentData.workCenter = "";
-            $scope.curentData.mold = "";
+            $scope.currentData.workCenter = "";
+            $scope.currentData.mold = "";
             try {
                 qrObj = JSON.parse(QRCodeResult);
             } catch (err) {
                 qrObj = {};
             }
             if(qrObj.workCenter){
-                $scope.curentData.workCenter = qrObj.workCenter;
+                $scope.currentData.workCenter = qrObj.workCenter;
             }
             if(qrObj.mold){
-                $scope.curentData.mold = qrObj.mold;
+                $scope.currentData.mold = qrObj.mold;
             }
         };
         function scanIt() {
@@ -104,7 +152,7 @@ angular.module('starter.controllers', [])
                 });
             }
 
-        };
+        }
 
     }])
 

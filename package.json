@@ -1,7 +1,7 @@
 {
-  "name": "retalmobilelab",
-  "version": "1.0.0",
-  "description": "RetalMobileLab: An Ionic project",
+  "name": "RetalMobileLab",
+  "version": "0.1.0",
+  "description": "Retal mobile lab: mobile interface for visual control operations",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",

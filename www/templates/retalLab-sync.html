@@ -1,0 +1,19 @@
+<ion-view view-title="UNSYNCHRONIZED DATA">
+    <ion-content class="padding has-header has-footer-70">
+      <div class="item">
+          <pre ng-bind="currentData | json"></pre>
+      </div>
+
+
+    </ion-content>
+    <div class="footer-70">
+        <div class="button-bar">
+            <button class="button button-stable button-large button-block" ng-click="onClickBack()">
+                Back
+            </button>
+            <button class="button button-balanced button-large button-block" ng-click="onClickSync()">
+                Sync
+            </button>
+        </div>
+    </div>
+</ion-view>

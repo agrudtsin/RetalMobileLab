@@ -20,23 +20,103 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   });
 }).
-service('CurentData',[function(){
+factory('$localstorage', ['$window', function($window) {
     return {
-        'controlType':'',
-        'workCenter':'',
-        'mold':'',
-        'user':'',
-        'dateTime':'',
-        'comment':'',
-        'numbers':''
+        set: function(key, value) {
+            $window.localStorage[key] = value;
+        },
+        get: function(key, defaultValue) {
+            return $window.localStorage[key] || defaultValue;
+        },
+        setObject: function(key, value) {
+            $window.localStorage[key] = JSON.stringify(value);
+        },
+        getObject: function(key) {
+            return JSON.parse($window.localStorage[key] || '{}');
+        }
+    }
+}])
+.service('Dafaults',['$localstorage',function($localstorage){
+        var obj = {
+            'data':{
+                'user':'',
+                'factory':''
+            },
+            'save':save,
+            'load':load
+        };
+        obj.load();
+        return obj;
 
-
+        function save(){
+            $localstorage.setObject('RetalMobileLab.defaults', this.data);
+        }
+        function load(){
+            var storedDefaults = $localstorage.getObject('RetalMobileLab.defaults');
+            if(!!storedDefaults && !!storedDefaults.user && !!storedDefaults.factory){
+                this.data = storedDefaults;
+            }
+        }
+    }])
+.service('CurrentData',['DataSet','Dafaults',function(DataSet, Dafaults){
+    var obj = {
+        'data':{},
+        'storeData':storeData
     };
+    obj.data = getClearDataObj();
+    return obj;
+
+    function storeData(){
+        DataSet.storeData(this.data);
+        this.data.date = new Date();
+        this.data = getClearDataObj();
+    }
+
+    function getClearDataObj(){
+        return {
+            'controlType': 'Visual control',
+            'workCenter': '',
+            'mold': '',
+            'date': '',
+            'comment': '',
+            'numbers': '',
+            'defect': '',
+            'factory': Dafaults.data.factory,
+            'user': Dafaults.data.user
+        }
+    }
+}]).
+
+service('DataSet',['$localstorage',function($localstorage){
+        var obj =  {
+            'unSyncData':[],
+            'storeData':storeData,
+            'sync':syncDemo
+        };
+        obj.unSyncData = $localstorage.getObject('RetalMobileLab.unSyncData');
+        if(! angular.isArray(obj.unSyncData)){
+            obj.unSyncData = [];
+        }
+        return obj;
+
+        function syncDemo(){
+            this.unSyncData = [];
+            $localstorage.setObject('RetalMobileLab.unSyncData', this.unSyncData);
+        }
+
+        function storeData(dataObj){
+            this.unSyncData.push(dataObj);
+            if(!!window.localStorage){
+                $localstorage.setObject('RetalMobileLab.unSyncData', this.unSyncData);
+                console.log('Data stored', dataObj);
+            }
+        }
 }]).
 factory('QRScanService', [function () {
 
     return {
         scan: function(success, fail) {
+            /** @namespace window.cordova.plugins.barcodeScanner */
             if(window.cordova && window.cordova.plugins.barcodeScanner){
                 window.cordova.plugins.barcodeScanner.scan(
                     function (result) { success(result); },
@@ -51,109 +131,47 @@ factory('QRScanService', [function () {
 
 }])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  //Disable controllers cashing because storing data in services
+  $ionicConfigProvider.views.maxCache(0);
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
   $stateProvider
-
-  // setup an abstract state for the tabs directive
-.state('tab', {
-    url: "/tab",
-    abstract: true,
-    templateUrl: "templates/tabs.html"
-  })
-
-  // Each tab has its own nav history stack:
-  .state('tab.home', {
+  .state('home', {
       url: '/home',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-home.html',
-              controller: 'RetalLabHomeCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-home.html',
+      controller: 'RetalLabHomeCtrl'
   })
-  .state('tab.scan', {
+  .state('scan', {
       url: '/scan',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-scan.html',
-              controller: 'RetalLabScanerCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-scan.html',
+      controller: 'RetalLabScanerCtrl'
   })
-  .state('tab.numbers', {
+  .state('numbers', {
       url: '/numbers',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-numbers.html',
-              controller: 'RetalLabNumbersCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-numbers.html',
+      controller: 'RetalLabNumbersCtrl'
   })
-  .state('tab.comment', {
+  .state('comment', {
       url: '/comment',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-comment.html',
-              controller: 'DashCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-comment.html',
+      controller: 'RetalLabCommentCtrl'
   })
-  .state('tab.defect', {
+  .state('defect', {
       url: '/defect',
-      views: {
-          'tab-dash': {
-              templateUrl: 'templates/retalLab-defect.html',
-              controller: 'DashCtrl'
-          }
-      }
+      templateUrl: 'templates/retalLab-defect.html',
+      controller: 'RetalLabDefectCtrl'
   })
-
-  .state('tab.dash', {
-    url: '/dash',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
+    .state('sync', {
+        url: '/sync',
+        templateUrl: 'templates/retalLab-sync.html',
+        controller: 'RetalLabSyncCtrl'
     })
-
-      .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
+  .state('login', {
+      url: '/login',
+      templateUrl: 'templates/retalLab-login.html',
+      controller: 'RetalLabLoginCtrl'
   });
-
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/home');
+    // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/home');
 
 });
