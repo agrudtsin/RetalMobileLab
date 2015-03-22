@@ -15,8 +15,10 @@
     <div class="footer-90">
         <h4>Selected numbers: {{getSelectedNumbers(numbersList)}}</h4>
 
-
-        <button class="button button-balanced button-large button-block" ng-click="onClickNext()">
+        <div class="button button-calm button-large button-block" ng-show="!getSelectedNumbers(numbersList)">
+            You must select numbers
+        </div>
+        <button class="button button-balanced button-large button-block" ng-click="onClickNext()" ng-hide="!getSelectedNumbers(numbersList)">
             Next
         </button>
     </div>

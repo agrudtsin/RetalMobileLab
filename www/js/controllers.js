@@ -1,6 +1,7 @@
 angular.module('starter.controllers', [])
-.controller('RetalLabHomeCtrl', function($scope, $ionicHistory) {
+.controller('RetalLabHomeCtrl', function($scope, $ionicHistory, CurrentData) {
         $ionicHistory.clearHistory();
+        $scope.currentData = CurrentData.data;
 })
 .controller('RetalLabDefectCtrl', function($scope, CurrentData, $state) {
         $scope.currentData = CurrentData.data;
@@ -17,12 +18,15 @@ angular.module('starter.controllers', [])
         };
 
 })
-.controller('RetalLabCommentCtrl', function($scope,$state) {
+.controller('RetalLabCommentCtrl', function($scope,$state, CurrentData) {
+    $scope.currentData = CurrentData.data;
+    $scope.currentData.comment = "";
     $scope.onClickNext = function(){
-        $state.go('home')
+        $state.go('home');
+        CurrentData.storeData();
     };
 })
-.controller('RetalLabNumbersCtrl', function($scope, $state) {
+.controller('RetalLabNumbersCtrl', function($scope, $state, CurrentData) {
         var MAX_COUNT_PREFORMS_ON_MOLD = 96;
         $scope.numbersList = [];
         for(var i = 1; i <= MAX_COUNT_PREFORMS_ON_MOLD; i++){
@@ -35,13 +39,14 @@ angular.module('starter.controllers', [])
 
         $scope.getSelectedNumbers = function(numbersList){
 
-            return numbersList
-                .filter(function(element, index, array){
+            CurrentData.data.numbers =
+                numbersList.filter(function(element, index, array){
                     return element.checked;
                 })
                 .reduce(function(previousValue, currentValue, index, array){
                     return previousValue + currentValue.text + ';';
                 }, "");
+            return CurrentData.data.numbers;
 
         }
 

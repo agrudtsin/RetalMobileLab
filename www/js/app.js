@@ -36,13 +36,15 @@ service('CurrentData',['DataSet',function(DataSet){
 
     function getClearDataObj(){
         return {
-            'controlType': '',
+            'controlType': 'Visual control',
             'workCenter': '',
             'mold': '',
-            'user': '',
             'date': '',
             'comment': '',
-            'numbers': ''
+            'numbers': '',
+            'defect': '',
+            'factory': 'Retal Dnepr',
+            'user': 'Operator 1'
         }
     };
 }]).
