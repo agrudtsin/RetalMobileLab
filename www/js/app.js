@@ -20,7 +20,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   });
 }).
-service('CurentData',['DataSet',function(DataSet){
+service('CurrentData',['DataSet',function(DataSet){
     var obj = {
         'data':{},
         'storeData':storeData

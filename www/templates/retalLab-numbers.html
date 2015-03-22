@@ -1,12 +1,7 @@
 <ion-view view-title="SELECT NUMBERS">
 
-    <div class="footer-90">
-        <h4>Selected numbers: {{getSelectedNumbers(numbersList)}}</h4>
-        <button class="button button-balanced button-large button-block" ng-click="onClickNext()">
-            Next
-        </button>
-    </div>
-    <ion-content class="padding has-footer-90 has-header">
+
+    <ion-content class="padding has-footer-90">
 
         <div class="list list-inset">
 
@@ -15,6 +10,14 @@
                           ng-checked="item.checked">
                 {{ item.text }}
             </ion-checkbox>
-         </div>
+        </div>
     </ion-content>
+    <div class="footer-90">
+        <h4>Selected numbers: {{getSelectedNumbers(numbersList)}}</h4>
+
+
+        <button class="button button-balanced button-large button-block" ng-click="onClickNext()">
+            Next
+        </button>
+    </div>
 </ion-view>

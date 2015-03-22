@@ -2,7 +2,19 @@ angular.module('starter.controllers', [])
 .controller('RetalLabHomeCtrl', function($scope, $ionicHistory) {
         $ionicHistory.clearHistory();
 })
-.controller('RetalLabDefectCtrl', function($scope) {
+.controller('RetalLabDefectCtrl', function($scope, CurrentData, $state) {
+        $scope.currentData = CurrentData.data;
+        $scope.currentData.defect = "";
+        $scope.defects = [];
+
+        for(var i=1; i<=150; i+=1){
+            $scope.defects.push(
+                {'text':'Defect '+ i.toString()}
+            )
+        };
+        $scope.onClickNext = function(){
+            $state.go('numbers')
+        };
 
 })
 .controller('RetalLabCommentCtrl', function($scope,$state) {
@@ -36,20 +48,20 @@ angular.module('starter.controllers', [])
 })
 
 .controller('RetalLabScanerCtrl',
-['QRScanService', '$ionicPopup', '$ionicModal','$scope','CurentData', '$state',
-    function (QRScanService, $ionicPopup, $ionicModal, $scope, CurentData, $state) {
+['QRScanService', '$ionicPopup', '$ionicModal','$scope','CurrentData', '$state',
+    function (QRScanService, $ionicPopup, $ionicModal, $scope, CurrentData, $state) {
 
        console.log('RetalLabScanerCtrl', "New ctrl init");
 
-       $scope.curentData = CurentData.data;
-       $scope.curentData.mold = "";
-       $scope.curentData.workCenter = "";
+       $scope.currentData = CurrentData.data;
+       $scope.currentData.mold = "";
+       $scope.currentData.workCenter = "";
        $scope.isDebugMode = ! window.cordova;
        scanIt();
 
         $scope.onClickSuccess = function(){
             $state.go('home');
-            CurentData.storeData();
+            CurrentData.storeData();
         };
 
         $scope.onClickDefect = function(){
@@ -58,18 +70,18 @@ angular.module('starter.controllers', [])
 
         $scope.decodeRawQRText = function decodeRawQRText(QRCodeResult) {
             var qrObj = {};
-            $scope.curentData.workCenter = "";
-            $scope.curentData.mold = "";
+            $scope.currentData.workCenter = "";
+            $scope.currentData.mold = "";
             try {
                 qrObj = JSON.parse(QRCodeResult);
             } catch (err) {
                 qrObj = {};
             }
             if(qrObj.workCenter){
-                $scope.curentData.workCenter = qrObj.workCenter;
+                $scope.currentData.workCenter = qrObj.workCenter;
             }
             if(qrObj.mold){
-                $scope.curentData.mold = qrObj.mold;
+                $scope.currentData.mold = qrObj.mold;
             }
         };
         function scanIt() {

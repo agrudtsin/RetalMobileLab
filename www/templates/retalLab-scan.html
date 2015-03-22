@@ -1,22 +1,5 @@
 <ion-view view-title="BARCODE SCAN">
 
-    <div class="footer-70">
-        <div class="button-bar">
-            <div class="button button-calm button-large button-block" ng-show="!curentData.workCenter || !curentData.mold ">
-                You must fill Working center and mold
-            </div>
-
-            <button class="button button-balanced button-large button-block" ng-click="onClickSuccess()"
-                    ng-hide="!curentData.workCenter || !curentData.mold">
-                Success
-            </button>
-            <button class="button button-assertive button-large button-block" ng-click="onClickDefect()"
-                    ng-hide="!curentData.workCenter || !curentData.mold" >
-                Defect
-            </button>
-        </div>
-    </div>
-
     <ion-content class="padding has-footer-70">
 
             <h3>{{scannerError}}</h3>
@@ -32,15 +15,29 @@
 
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Work center</span>
-                <input type="text" ng-model="curentData.workCenter">
+                <input type="text" ng-model="currentData.workCenter">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Mold</span>
-                <input type="text" ng-model="curentData.mold">
+                <input type="text" ng-model="currentData.mold">
             </label>
-
-
     </ion-content>
+    <div class="footer-70">
+        <div class="button-bar">
+            <div class="button button-calm button-large button-block" ng-show="!currentData.workCenter || !currentData.mold ">
+                You must fill Working center and mold
+            </div>
+
+            <button class="button button-balanced button-large button-block" ng-click="onClickSuccess()"
+                    ng-hide="!currentData.workCenter || !currentData.mold">
+                Success
+            </button>
+            <button class="button button-assertive button-large button-block" ng-click="onClickDefect()"
+                    ng-hide="!currentData.workCenter || !currentData.mold" >
+                Defect
+            </button>
+        </div>
+    </div>
 
 
 
