@@ -3,17 +3,15 @@
 
     <ion-content class="padding has-footer-90">
 
-        <div class="list list-inset">
-
-            <ion-checkbox class="item" ng-repeat="item in numbersList"
+            <ion-checkbox class="item" collection-repeat="item in numbersList"
                           ng-model="item.checked"
                           ng-checked="item.checked">
                 {{ item.text }}
             </ion-checkbox>
-        </div>
+
     </ion-content>
     <div class="footer-90">
-        <h4>Selected numbers: {{getSelectedNumbers(numbersList)}}</h4>
+        <h6>Selected numbers: {{getSelectedNumbers(numbersList)}}</h6>
 
         <div class="button button-calm button-large button-block" ng-show="!getSelectedNumbers(numbersList)">
             You must select numbers

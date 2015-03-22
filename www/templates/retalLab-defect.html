@@ -1,15 +1,9 @@
 <ion-view view-title="SELECT DEFECT">
     <ion-content class="padding has-header has-footer-70">
-        <div class="list list-inset">
-            <ion-item>
-                <ion-radio class="item" ng-repeat="item in defects"
-                              ng-model="currentData.defect"
-                              ng-value="item.text">
-                    {{item.text}}
+        <ion-radio ng-model="currentData.defect" ng-value="item.text" collection-repeat="item in defects">
+            {{item.text}}
+        </ion-radio>
 
-                </ion-radio>
-            </ion-item>
-        </div>
     </ion-content>
     <div class="footer-70">
         <div class="button button-calm button-large button-block" ng-show="!currentData.defect">
